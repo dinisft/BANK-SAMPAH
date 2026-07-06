@@ -1,3 +1,6 @@
+NAMA  : DINI SAFITRI
+NIM   : 101230026
+KELAS : TF 23 C
 # 🌱 Bank Sampah - Waste Management System
 
 ![PHP Lint Check](https://github.com/dinisft/BANK-SAMPAH/actions/workflows/php-lint.yml/badge.svg)
