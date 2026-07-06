@@ -1,0 +1,39 @@
+name: PHP Lint Check
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-version: ['7.4', '8.0', '8.1']
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-version }}
+        tools: phpstan, phpcs
+
+    - name: Install dependencies
+      run: |
+        if [ -f composer.json ]; then
+          composer install --no-interaction --no-progress
+        fi
+
+    - name: Run PHP Lint
+      run: find . -name "*.php" -type f ! -path "./vendor/*" -exec php -l {} \;
+
+    - name: Run PHPStan
+      run: phpstan analyse . --level=1 --no-progress || true
+
+    - name: Check PHP Code Style
+      run: phpcs --standard=PSR2 . --exclude=vendor || true
